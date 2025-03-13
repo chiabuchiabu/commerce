@@ -1,0 +1,116 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+        {% endfor %} 
+    {% endif %}
+    {% if active.active == False %}
+        {% if user == bider.buyer %}
+            <div class="alert alert-info">Congratulations!!  You won this auction for ${{ maxbid |floatformat:-2 }} !!  </div>
+        {% endif %}
+    {% endif %}        
+
+    
+    <div class="listing">
+        <img src="{{ listitem.url }}" alt="image">
+        <div class="product-detail">
+        <h3>{{ listitem.title }}</h3><hr>
+        <p>{{ listitem.description}}</p>
+        <p>Starting price:${{ listitem.startbidprice }}</p>
+        {% if maxbid %}
+            <p>Highest bid price:${{ maxbid |floatformat:-2 }} <i>from {{ bider.buyer}}</i></p>
+            
+        {% else %}
+            <p>Current bid price:{{ nobid }}</p>
+        {% endif %}
+  
+        <div>
+        {% if user.is_authenticated %}    
+            {% if inwatch %}
+                <form action="{% url 'remove' listitem.id %}" class="mb-3" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Remove Watchlist</button>
+                </form>
+            {% else %}
+                <form action="{% url 'watchlist' listitem.id %}"    class="mb-3" method="POST">
+                    {% csrf_token %}     
+                    <button type="submit" class="btn btn-info btn-sm">Add Watchlist</button>
+                </form>
+            {% endif %}    
+        {% else %}
+        {% endif %}
+        </div>
+        <div>
+        {% if user.is_authenticated %}
+            {% if  user  ==  listitem.seller  %}
+                {% if active.active == True %}
+                <!--write a form from this -->             
+                    <form action="{% url 'close' listitem.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning btn-sm">close auction</button>
+                    </form>
+                {% else %}
+                    <div class="win"><span class="highlight">{{ bider.buyer }}</span> won this item for <span class="price">${{ maxbid |floatformat:-2 }}</span></div>
+                {% endif %}    
+ 
+            {% else %}
+                {% if active.active == True %}
+                    {% if maxbid %}
+                        <form action="{% url 'bid' listitem.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="bid" min="{{ bidmin }}" step="0.01" class="formborder" placeholder="your bid price">
+                            <button type="submit" class="btn btn-primary btn-sm">Bid</button>
+                        </form>      
+                    {% else %}
+                        <form action="{% url 'bid' listitem.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="bid" min="{{ listitem.startbidprice }}" class="formborder" placeholder="your bid price" step="0.01">
+                            <button type="submit" class="btn btn-primary btn-sm">Bid</button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <div class="win"><span class="highlight">{{ bider.buyer }}</span> won this item for <span class="price">${{ maxbid |floatformat:-2 }}</span></div>
+                {% endif %}    
+            {% endif %}      
+        {% else %}
+        {% endif %}            
+        </div>
+        <div><em>Provided By:{{ listitem.seller }}  {{ listitem.up_date|date:"Y-m-d" }}</em></div>
+        </div>  
+    </div>
+    
+    <div class="comments-section mt-5">
+        <h3>Comments</h3>
+        {% for com in comment %}
+            <div class="comment-list border rounded ">
+                <div class="card-body">
+                    <h5 class="card-title">{{ com.user }}</h5>
+                    <p class="card-text">{{ com.comment }}</p>
+                    <p class="text-muted small">{{ com.create_time }}</p>
+                </div>
+            </div>
+        {% empty %}
+        <div class="m-3">No comments ...</div>    
+        {% endfor %}    
+    {% if user.is_authenticated %}
+        <form action="{% url 'comment' listitem.id %}" method="POST" class="mt-5">
+            {% csrf_token %}
+            <div class="mb-3">
+                <h4>Add a comment</h4>
+                <textarea class="form-control" id="commentText" name="comment" rows="3" placeholder="Write your comment here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    {% else %}
+
+    <div class="p-2 border my-3 text-muted bg-light rounded">
+        Sign in to add a comment and place a bid.
+    </div>
+ 
+    {% endif %}    
+    </div>
+
+{% endblock %}

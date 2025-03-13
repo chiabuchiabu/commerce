@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <ul class="style_list">
+        {% for auc in auction %}
+            <li>
+                <a href="{% url 'listing' auc.id %}" class="anchor">  
+                <div class="product-item">
+                    <img src="{{ auc.url }}" alt="image" >
+                    <div class="product-detail">
+                        <h5>{{ auc.title }}</h5>
+                        <p class="des">{{ auc.description }}</p></a>  
+                        <p>Starting: ${{ auc.startbidprice }} </p>
+                        {% if auc.highestbid %}
+                            <p>Current bid: ${{ auc.highestbid }}</p>
+                        {% else %}
+                            <p>Current bid: $ None</p>
+                        {% endif %}        
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

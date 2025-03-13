@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+    <h2>Finishing Bid</h2>
+    <ul class="style_list">
+        {% for item in close %}
+            <li>
+                <a href="{% url 'listing' item.id %}" class="anchor">  
+                <div class="product-item">
+                    <img src="{{ item.url }}" alt="image" >
+                    <div class="product-detail">
+                        <h5>{{ item.title }}</h5>
+                        <p class="des">{{ item.description }}</p></a>  
+                        <p><span class="highlight">{{ item.highestbider }} </span>won  for <span class="win">${{ item.highestbid }}</span></p>
+                        <p>Provider: {{ item.seller }}</p>    
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<span class="badge bg-secondary text-white mx-3">watchlist</span>
+    {% for item in watch %}
+        <div class="card m-3" style="width: 100%; max-width: 900px; height:auto;">
+            <div class="row g-0 h-100">   
+            <div class="col-4 col-md-3">
+                <a href="{% url 'listing' item.id %}" class="anchor"><img src="{{ item.url }}" class="img-fluid rounded-start" alt="..." style="object-fit:cover;">
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="card-body">
+                <h5 class="card-text">{{ item.title }}</h5></a>
+                <p class="card-text mt-2">{{ item.description }}</p>
+                <p class="card-text">Start Bid:${{ item.startbidprice }}</p>
+                {% if item in active%}
+                    <p class="card-text">Current Bid:${{ item.highestbid }}</p>
+                {% else %}
+                    <p class="card-text"><span class="highlight">{{ item.highestbider }}</span> won for <span class="price">${{ item.highestbid }}</span></p>
+                {% endif %}        
+                <p class="card-text"><small class="text-body-secondary"></small></p>              
+                </div>
+            </div>
+            </div>
+        </div> 
+    {% empty %}
+        <div>No item in watchlist</div>
+    {% endfor %}
+
+{% endblock %}
