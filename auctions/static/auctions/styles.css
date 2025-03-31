@@ -198,25 +198,3 @@ h1{
 }
 
 
-/*這是類別的css*/
-
-/*
-.product-item {
-    background-color: #ffffffe6;
-    border-radius: 10px;
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 350px;
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    transition: transform 0.3s;
-}
-
-
-
-.product-item:hover{
-    transform:translateY(-6px);
-
-}
-*/    
