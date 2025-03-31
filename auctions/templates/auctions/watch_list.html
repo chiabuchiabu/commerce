@@ -13,7 +13,7 @@
                 <h5 class="card-text">{{ item.title }}</h5></a>
                 <p class="card-text mt-2">{{ item.description }}</p>
                 <p class="card-text">Start Bid:${{ item.startbidprice }}</p>
-                {% if item in active%}
+                {% if item in active %}
                     <p class="card-text">Current Bid:${{ item.highestbid }}</p>
                 {% else %}
                     <p class="card-text"><span class="highlight">{{ item.highestbider }}</span> won for <span class="price">${{ item.highestbid }}</span></p>

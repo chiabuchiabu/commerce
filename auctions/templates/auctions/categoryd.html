@@ -1,4 +1,24 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
-  THIS IS CATEGORY
+  THIS IS CATEGORY {{ category_name }}
+  <ul class="style_list">
+    {% for item in items %}
+    <li>
+        <a href="{% url 'listing' item.id %}" class="anchor">  
+            <div class="product-item">
+                <img src="{{ item.url }}" alt="image" >
+                <div class="product-detail">
+                    <h5>{{ item.title }}</h5>
+                    <p class="des">{{ item.description }}</p></a>  
+                    <p>Starting: ${{ item.startbidprice }} </p>
+                    {% if item.highestbid %}
+                    <p>Current bid: ${{ item.highestbid }}</p>
+                    {% else %}
+                    <p>Current bid: $ None</p>
+                    {% endif %}    
+                </div>
+            </div>  
+      </li>
+    {% endfor %} 
+  </ul>
 {% endblock %}

@@ -189,5 +189,9 @@ def closelist(request):
 def category(request):
     return render(request,"auctions/category.html")
 
-def categoryd(request):
-    return render(request,"auctions/categoryd.html")
+def categoryd(request,category_name):
+    items=auction_list.objects.filter(category=category_name)
+    return render(request,"auctions/categoryd.html",{
+        "category_name":category_name,
+        "items":items
+    })
